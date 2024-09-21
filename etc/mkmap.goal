@@ -1,0 +1,23 @@
+#!/usr/bin/env goal
+
+/ numerical
+n:("s"$i)!(("s"$)'i:!10)
+
+/ alphabetical
+a:(("Cap"+)'a)!a:("c"$)'65+!26
+
+/ other manual keys
+o:,/(!["LParen" "RParen" "LBrack" "RBrack" 
+       "("      ")"      "["      "]"]
+     !["LBrace" "RBrace"
+       "{"      ")"])
+
+/ full map
+m:o,n,a
+
+nl:{x+"\n"+y}
+say nl/("#include \"key.h\""
+        "namespace key {"
+        "const uint8_t map[822] = {"
+        {x+",\n"+y}/{(k;v):(x;m[x]);"[ k_$k ] = '$v'"}'!m
+        "};}")
