@@ -3,10 +3,13 @@
 
 #include <stdint.h>
 
+#include "vec.h"
+
 namespace con {
 	struct con {
 		uint8_t x;
 		uint8_t y;
+		vec::vec<char> ln;
 
 		con();
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env goal
 
+/ etc/mkkey.goal > src/key.cpp
+
 / numerical
 n:("s"$i)!(("s"$)'i:!10)
 
@@ -7,10 +9,10 @@ n:("s"$i)!(("s"$)'i:!10)
 a:(("Cap"+)'a)!a:("c"$)'65+!26
 
 / other manual keys
-o:,/(!["LParen" "RParen" "LBrack" "RBrack" 
-       "("      ")"      "["      "]"]
-     !["LBrace" "RBrace"
-       "{"      ")"])
+o:,/(!["LParen" "RParen" "LBrack" "RBrack" "LBrace" "RBrace" 
+       "("      ")"      "["      "]"      "{"      "}"]
+     !["Enter" "Varx" "EE"
+       "\\n"   "X"    "E"])
 
 / full map
 m:o,n,a

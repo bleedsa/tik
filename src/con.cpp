@@ -28,6 +28,11 @@ namespace con {
 	}
 
 	uint8_t con::putc(char c) {
+		switch (c) {
+			case '\n': nl();  return 1;
+			case '\t': tab(); return 1;
+		}
+
 		os_SetCursorPos(y, x);
 		x += 1;
 
@@ -37,13 +42,7 @@ namespace con {
 
 	uint8_t con::puts(const char *s) {
 		for (; *s; s++) {
-			char c = *s;
-			switch (c) {
-				case '\n': nl();  continue;
-				case '\t': tab(); continue;
-			}
-
-			if (putc(c) != 1) return -1;
+			if (putc(*s) != 1) return -1;
 		}
 		return 1;
 	}
@@ -56,6 +55,18 @@ namespace con {
 
 	uint8_t con::getc() {
 		auto k = os_GetKey();
-		return key::map[k];
+		auto c = key::map[k];
+		putc(c);
+
+		if (c == '\n') {
+			char b[vec::SIZE];
+			vec::char_vec_to_str(ln, b);
+			putln(b);
+			ln = vec::vec<char>();
+		} else {
+			ln.push(c);
+		}
+
+		return c;
 	}
 }
