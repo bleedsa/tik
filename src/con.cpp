@@ -5,10 +5,12 @@
 #include "str.h"
 #include "key.h"
 #include "con.h"
+#include "lex.h"
 
 namespace con {
 	con::con() {
 		x = 0, y = 0;
+		ln = vec::vec<char>();
 		clr();
 	}
 
@@ -47,7 +49,20 @@ namespace con {
 		return 1;
 	}
 
+	uint8_t con::puts(str::str s) {
+		for (size_t i = 0; i < s.len(); i++) {
+			if (putc(s.at(i)) != 1) return -1;
+		}
+		return 1;
+	}
+
 	uint8_t con::putln(const char *s) {
+		auto r = puts(s);
+		nl();
+		return r;
+	}
+
+	uint8_t con::putln(str::str s) {
 		auto r = puts(s);
 		nl();
 		return r;
@@ -59,10 +74,20 @@ namespace con {
 		putc(c);
 
 		if (c == '\n') {
-			char b[vec::SIZE];
-			vec::char_vec_to_str(ln, b);
-			putln(b);
-			ln = vec::vec<char>();
+			auto t = lex::tape(ln);
+			auto v = t.lex();
+
+			if (/*v.is_ok()*/true) {
+				//putln(v.ok().at(0).to_str());
+				/*
+				v.ok().for_each([this](lex::tok x){
+					putln(x.to_str());
+				});
+				*/
+				ln = vec::vec<char>();
+			} else {
+				putln("ERR");
+			}
 		} else {
 			ln.push(c);
 		}

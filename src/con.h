@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "vec.h"
+#include "str.h"
 
 namespace con {
 	struct con {
@@ -19,7 +20,9 @@ namespace con {
 
 		uint8_t putc(char c);
 		uint8_t puts(const char *s);
+		uint8_t puts(str::str s);
 		uint8_t putln(const char *s);
+		uint8_t putln(str::str s);
 
 		uint8_t getc();
 	};

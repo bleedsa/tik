@@ -11,15 +11,15 @@ a:(("Cap"+)'a)!a:("c"$)'65+!26
 / other manual keys
 o:,/(!["LParen" "RParen" "LBrack" "RBrack" "LBrace" "RBrace" 
        "("      ")"      "["      "]"      "{"      "}"]
-     !["Enter" "Varx" "EE"
-       "\\n"   "X"    "E"])
+     !["Enter" "Varx" "EE" "Clear"
+       "\\n"   "X"    "E"  "\\v"])
 
 / full map
 m:o,n,a
 
-nl:{x+"\n"+y}
-say nl/("#include \"key.h\""
+nl:{x+"$z\n"+y}
+say nl[;;""]/("#include \"key.h\""
         "namespace key {"
         "const uint8_t map[822] = {"
-        {x+",\n"+y}/{(k;v):(x;m[x]);"[ k_$k ] = '$v'"}'!m
+        nl[;;","]/{(k;v):(x;m[x]);"[ k_$k ] = '$v'"}'!m
         "};}")
