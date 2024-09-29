@@ -1,6 +1,8 @@
+#ifndef HOST
 #include <ti/screen.h>
 #include <ti/getcsc.h>
 #include <ti/getkey.h>
+#endif
 
 #include "str.h"
 #include "key.h"
@@ -84,7 +86,7 @@ namespace con {
 					putln(x.to_str());
 				});
 				*/
-				ln = vec::vec<char>();
+				//ln = vec::vec<char>();
 			} else {
 				putln("ERR");
 			}

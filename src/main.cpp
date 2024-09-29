@@ -1,10 +1,4 @@
-#include <stdint.h>
-#include <ti/screen.h>
-#include <ti/getcsc.h>
-
 #include "con.h"
-#include "vec.h"
-#include "str.h"
 
 int main(void) {
 	auto c = con::con();

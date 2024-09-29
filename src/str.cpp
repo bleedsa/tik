@@ -14,7 +14,6 @@ namespace str {
 		i = 0;
 		sz = 8;
 		buf = (char*)malloc(sizeof(char) * sz);
-		if (buf == NULL) os_PutStrLine("null");
 		memset(buf, 0, sizeof(char) * sz);
 	}
 
@@ -26,7 +25,6 @@ namespace str {
 		if (i >= sz) {
 			sz *= 2;
 			buf = (char*)realloc(buf, sizeof(char) * sz);
-			if (buf == NULL) os_PutStrLine("null");
 			memset(buf, 0, sizeof(char) * sz);
 		}
 

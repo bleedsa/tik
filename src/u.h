@@ -1,6 +1,8 @@
 #ifndef __U_H__
 #define __U_H__
 
+#include <string.h>
+
 template<typename T, typename E>
 struct result {
 	union {
@@ -17,6 +19,12 @@ struct result {
 	result(E x) {
 		e = x;
 		is_o = false;
+	}
+
+	result& operator=(const result& x) {
+		is_o = x.is_o;
+		if (is_o) o = x.o;
+		else e = x.e;
 	}
 
 	~result() {
