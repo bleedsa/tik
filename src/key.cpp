@@ -11,6 +11,7 @@ const uint8_t map[822] = {
 [ k_Varx ] = 'X',
 [ k_EE ] = 'E',
 [ k_Clear ] = '\v',
+[ k_Comma ] = ',',
 [ k_0 ] = '0',
 [ k_1 ] = '1',
 [ k_2 ] = '2',

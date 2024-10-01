@@ -21,6 +21,19 @@ namespace str {
 		free(buf);
 	}
 
+	#define CLONE(x) { \
+		i = x.i, sz = x.sz; \
+		buf = (char*)malloc(sizeof(char) * sz); \
+		memcpy(buf, x.buf, sizeof(char) * sz); \
+	}
+
+	str::str(const str& x) CLONE(x)
+
+	str& str::operator=(const str& x) {
+		CLONE(x);
+		return *this;
+	}
+
 	void str::push(char x) {
 		if (i >= sz) {
 			sz *= 2;
@@ -32,6 +45,14 @@ namespace str {
 		i++;
 	}
 
+	void str::append(const char *x) {
+		for (size_t j = 0; j < ::str::len(x); j++) push(x[j]);
+	}
+
+	void str::append(str x) {
+		for (size_t j = 0; j < x.len(); j++) push(x.at(j));
+	}
+
 	char str::at(size_t x) {
 		return buf[x];
 	}
@@ -40,7 +61,8 @@ namespace str {
 		return i;
 	}
 
-	str from_c(char *s) {
+	str from_c(const char *s) {
+		dbg_printf("from_c: %s\n", s);
 		auto r = str();
 		for (; *s; s++) r.push(*s);
 		return r;

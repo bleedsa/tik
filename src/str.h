@@ -13,13 +13,17 @@ namespace str {
 
 		str();
 		~str();
+		str(const str& x);
+		str& operator=(const str& x);
 
 		void push(char x);
+		void append(const char *x);
+		void append(str x);
 		char at(size_t x);
 		size_t len();
 	};
 
-	str from_c(char *s);
+	str from_c(const char *s);
 }
 
 namespace chr {

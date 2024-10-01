@@ -7,14 +7,10 @@
 #include "u.h"
 
 namespace lex {
-	enum err {
-		UNEXPECTED_CHAR,
-	};
-
 	template<typename T>
-	using R = result<T, err>;
+	using R = result<T, str::str>;
 
-	enum tok_ty {
+	enum tok_ty_t {
 		NUM,
 		CHR,
 		VEC,
@@ -22,13 +18,14 @@ namespace lex {
 		NAME,
 	};
 
-	struct tok {
-		tok_ty type;
-		size_t s; /* start */
-		size_t e; /* end */
-		vec::vec<char> *v;
+	struct pos_t {
+		size_t i;
+		size_t line;
+		size_t col;
 
-		str::str to_str();
+		inline size_t idx() {
+			return i;
+		}
 	};
 
 	struct tape {
@@ -38,8 +35,41 @@ namespace lex {
 		vec::vec<char> src;
 
 		tape(vec::vec<char> s);
-		R<vec::vec<tok>> lex();
+		option<char> peek();
+		
+		inline option<char> at(size_t idx) {
+			return src.at(idx);
+		}
+
+		inline pos_t pos() {
+			return (pos_t) { i, line, col };
+		}
+
+		inline void inc() {
+			i++;
+			col++;
+		}
+
+		bool inc_if(char x);
 	};
+
+	struct tok_t {
+		tok_ty_t type;
+		pos_t s; /* start */
+		tape t;
+		R<str::str> to_str();
+	};
+
+	/** return tok_t */
+	using R_T = R<tok_t>;
+	/** return A (vec) */
+	using R_A = R<vec::vec<tok_t>>;
+	/** return S (str) */
+	using R_S = R<str::str>;
+
+	R_T name(tape *t);
+	R_T expr(tape *t);
+	R_A exprs(tape *t);
 }
 
 #endif

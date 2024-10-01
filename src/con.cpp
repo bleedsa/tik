@@ -13,6 +13,7 @@ namespace con {
 	con::con() {
 		x = 0, y = 0;
 		ln = vec::vec<char>();
+		lns = vec::vec<vec::vec<char>>();
 		clr();
 	}
 
@@ -25,6 +26,11 @@ namespace con {
 	void con::nl() {
 		y += 1;
 		x = 0;
+
+		if (y > 9) {
+			y = 0;
+			clr();
+		}
 	}
 
 	void con::tab() {
@@ -77,19 +83,26 @@ namespace con {
 
 		if (c == '\n') {
 			auto t = lex::tape(ln);
-			auto v = t.lex();
+			auto v = lex::exprs(&t);
+			/* display */
+			auto d = [this](lex::tok_t x) {
+				auto e = x.to_str();
+				if (e.is_ok()) {
+					putc(' ');
+					putln(e.ok());
+				} else {
+					putln(e.err());
+				}
+			};
 
-			if (/*v.is_ok()*/true) {
-				//putln(v.ok().at(0).to_str());
-				/*
-				v.ok().for_each([this](lex::tok x){
-					putln(x.to_str());
-				});
-				*/
-				//ln = vec::vec<char>();
+			if (v.is_ok()) {
+				v.ok().for_each(d);
 			} else {
-				putln("ERR");
+				putln(v.err());
 			}
+
+			lns.push(ln);
+			ln.clear();
 		} else {
 			ln.push(c);
 		}

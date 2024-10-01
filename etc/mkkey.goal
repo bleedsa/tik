@@ -11,8 +11,8 @@ a:(("Cap"+)'a)!a:("c"$)'65+!26
 / other manual keys
 o:,/(!["LParen" "RParen" "LBrack" "RBrack" "LBrace" "RBrace" 
        "("      ")"      "["      "]"      "{"      "}"]
-     !["Enter" "Varx" "EE" "Clear"
-       "\\n"   "X"    "E"  "\\v"])
+     !["Enter" "Varx" "EE" "Clear" "Comma"
+       "\\n"   "X"    "E"  "\\v"   ","])
 
 / full map
 m:o,n,a

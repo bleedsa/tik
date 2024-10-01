@@ -11,6 +11,7 @@ namespace con {
 		uint8_t x;
 		uint8_t y;
 		vec::vec<char> ln;
+		vec::vec<vec::vec<char>> lns;
 
 		con();
 

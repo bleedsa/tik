@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <debug.h>
 #include <string.h>
+#include <ti/screen.h>
+
+#include "u.h"
 
 namespace vec {
 	template<typename T>
@@ -14,8 +17,7 @@ namespace vec {
 		size_t sz;
 
 		vec() {
-			i = 0;
-			sz = 32;
+			i = 0, sz = 8;
 			buf = (T*)malloc(sizeof(T) * sz);
 			if (buf == nullptr) dbg_printf("malloc() failed\n");
 			else dbg_printf("malloc() ok\n");
@@ -38,6 +40,14 @@ namespace vec {
 			return *this;
 		}
 
+		void clear() {
+			i = 0, sz = 8;
+			free(buf);
+			buf = (T*)malloc(sizeof(T) * sz);
+			if (buf == nullptr) dbg_printf("malloc() failed\n");
+			else dbg_printf("malloc() ok\n");
+		}
+
 		void push(T x) {
 			if (i >= sz) {
 				sz *= 2;
@@ -50,8 +60,12 @@ namespace vec {
 			i++;
 		}
 
-		T at(size_t idx) {
-			return buf[idx];
+		option<T> at(size_t idx) {
+			if (idx < i) {
+				return option<T>(buf[idx]);
+			} else {
+				return option<T>();
+			}
 		}
 
 		inline size_t size() {
@@ -60,7 +74,9 @@ namespace vec {
 
 		template<typename F>
 		void for_each(F f) {
-			for (size_t j = 0; j < i; j++) f(at(j));
+			for (size_t j = 0; j < i; j++) {
+				f(at(j).get());
+			}
 		}
 	};
 }
