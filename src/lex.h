@@ -29,6 +29,14 @@ namespace lex {
 		inline size_t idx() {
 			return i;
 		}
+
+		inline auto to_str() -> str::str {
+			auto r = str::str();
+			r.append(str::from_i(line));
+			r.push(',');
+			r.append(str::from_i(col));
+			return r;
+		}
 	};
 
 	struct tape {
@@ -61,7 +69,12 @@ namespace lex {
 		tok_ty_t ty;
 		pos_t s; /* start */
 		tape t;
+
 		str::str to_str();
+
+		inline auto pos() -> pos_t {
+			return s;
+		}
 	};
 
 	/** return tok_t */

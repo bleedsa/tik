@@ -30,7 +30,9 @@ namespace prs {
 				r.push(node_t(x.to_str().to_i()));
 				break;
 			default:
-				s.append("parse\n? ");
+				s.append("parse ");
+				s.append(x.pos().to_str());
+				s.append("\n? ");
 				s.append(x.to_str());
 				return R_A::mkerr(s);
 			}

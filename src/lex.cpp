@@ -130,7 +130,9 @@ namespace lex {
 					return sep(t);
 				default:
 					auto r = str::str();
-					r.append("lex\n? ");
+					r.append("lex ");
+					r.append(t->pos().to_str());
+					r.append("\n? ");
 					r.push(c);
 					return R_T::mkerr(r);
 				}
