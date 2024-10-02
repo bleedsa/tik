@@ -1,6 +1,7 @@
 #ifndef __STR_H__
 #define __STR_H__
 
+#include "u.h"
 #include <stdint.h>
 
 namespace str {
@@ -21,9 +22,11 @@ namespace str {
 		void append(str x);
 		char at(size_t x);
 		size_t len();
+		int_t to_i();
 	};
 
 	str from_c(const char *s);
+	str from_i(int_t x);
 }
 
 namespace chr {

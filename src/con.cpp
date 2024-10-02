@@ -8,6 +8,7 @@
 #include "key.h"
 #include "con.h"
 #include "lex.h"
+#include "prs.h"
 
 namespace con {
 	con::con() {
@@ -81,29 +82,39 @@ namespace con {
 		auto c = key::map[k];
 		putc(c);
 
-		if (c == '\n') {
-			auto t = lex::tape(ln);
-			auto v = lex::exprs(&t);
-			/* display */
-			auto d = [this](lex::tok_t x) {
-				auto e = x.to_str();
-				if (e.is_ok()) {
-					putc(' ');
-					putln(e.ok());
-				} else {
-					putln(e.err());
-				}
-			};
+		/* display */
+		auto d = [this](prs::node_t x) {
+			putc(' ');
+			putln(x.to_str());
+		};
+
+		switch (c) {
+		case '\n': {
+			auto l = lex::tape(ln);
+			auto v = lex::lex(&l);
 
 			if (v.is_ok()) {
-				v.ok().for_each(d);
+				auto p = prs::tape(v.ok());
+				auto n = prs::parse(&p);
+				if (n.is_ok()) {
+					n.ok().for_each(d);
+				} else {
+					puts(" !");
+					putln(n.err());
+				}
 			} else {
+				puts(" !");
 				putln(v.err());
 			}
 
 			lns.push(ln);
 			ln.clear();
-		} else {
+			break;
+		}
+		case '\v':
+			clr();
+			break;
+		default:
 			ln.push(c);
 		}
 

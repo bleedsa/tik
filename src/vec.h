@@ -6,6 +6,7 @@
 #include <debug.h>
 #include <string.h>
 #include <ti/screen.h>
+#include <ti/error.h>
 
 #include "u.h"
 
@@ -17,7 +18,7 @@ namespace vec {
 		size_t sz;
 
 		vec() {
-			i = 0, sz = 8;
+			i = 0, sz = 1;
 			buf = (T*)malloc(sizeof(T) * sz);
 			if (buf == nullptr) dbg_printf("malloc() failed\n");
 			else dbg_printf("malloc() ok\n");
@@ -50,10 +51,12 @@ namespace vec {
 
 		void push(T x) {
 			if (i >= sz) {
-				sz *= 2;
+				sz += 1;
 				buf = (T*)realloc(buf, sizeof(T) * sz);
-				if (buf == nullptr) dbg_printf("realloc() failed\n");
-				else dbg_printf("realloc() ok\n");
+				if (buf == nullptr) {
+					dbg_printf("realloc() failed\n");
+					fatal(OS_E_MEMORY);
+				} else dbg_printf("realloc() ok\n");
 			}
 
 			buf[i] = x;
@@ -72,10 +75,14 @@ namespace vec {
 			return sz;
 		}
 
+		inline size_t len() {
+			return i;
+		}
+
 		template<typename F>
 		void for_each(F f) {
 			for (size_t j = 0; j < i; j++) {
-				f(at(j).get());
+				f(buf[j]);
 			}
 		}
 	};

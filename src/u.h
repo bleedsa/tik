@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <ti/error.h>
 
 template<typename T, typename E>
 struct result {
@@ -84,6 +85,12 @@ inline bool operator==(const option<T>& x, const option<T>& y) {
 		if (x.e) return x.i == y.i;
 		else return true;
 	} else return false;
+}
+
+using int_t = long int;
+
+static inline auto fatal(uint8_t x) -> void {
+	os_ThrowError(x);
 }
 
 #endif

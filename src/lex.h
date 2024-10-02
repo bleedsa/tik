@@ -11,11 +11,14 @@ namespace lex {
 	using R = result<T, str::str>;
 
 	enum tok_ty_t {
-		NUM,
+		INT,
+		FLT,
 		CHR,
-		VEC,
 		VERB,
 		NAME,
+		OPEN,
+		CLOSE,
+		SEP
 	};
 
 	struct pos_t {
@@ -50,14 +53,15 @@ namespace lex {
 			col++;
 		}
 
-		bool inc_if(char x);
+		bool inc_if(option<char> x);
+		bool inc_if_not(option<char> x);
 	};
 
 	struct tok_t {
-		tok_ty_t type;
+		tok_ty_t ty;
 		pos_t s; /* start */
 		tape t;
-		R<str::str> to_str();
+		str::str to_str();
 	};
 
 	/** return tok_t */
@@ -67,9 +71,7 @@ namespace lex {
 	/** return S (str) */
 	using R_S = R<str::str>;
 
-	R_T name(tape *t);
-	R_T expr(tape *t);
-	R_A exprs(tape *t);
+	R_A lex(tape *t);
 }
 
 #endif

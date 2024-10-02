@@ -1,6 +1,10 @@
 #include "key.h"
 namespace key {
 const uint8_t map[822] = {
+[ k_Add ] = '+',
+[ k_Sub ] = '-',
+[ k_Mul ] = '*',
+[ k_Div ] = '%',
 [ k_LParen ] = '(',
 [ k_RParen ] = ')',
 [ k_LBrack ] = '[',
@@ -12,6 +16,8 @@ const uint8_t map[822] = {
 [ k_EE ] = 'E',
 [ k_Clear ] = '\v',
 [ k_Comma ] = ',',
+[ k_Quit ] = '\0',
+[ k_DecPnt ] = '.',
 [ k_0 ] = '0',
 [ k_1 ] = '1',
 [ k_2 ] = '2',

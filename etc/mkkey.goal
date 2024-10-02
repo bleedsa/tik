@@ -8,14 +8,18 @@ n:("s"$i)!(("s"$)'i:!10)
 / alphabetical
 a:(("Cap"+)'a)!a:("c"$)'65+!26
 
+/ verbs
+v:!["Add" "Sub" "Mul" "Div"
+    ("c"$)'"c"$"+-*%"]
+
 / other manual keys
 o:,/(!["LParen" "RParen" "LBrack" "RBrack" "LBrace" "RBrace" 
        "("      ")"      "["      "]"      "{"      "}"]
-     !["Enter" "Varx" "EE" "Clear" "Comma"
-       "\\n"   "X"    "E"  "\\v"   ","])
+     !["Enter" "Varx" "EE" "Clear" "Comma" "Quit" "DecPnt"
+       "\\n"   "X"    "E"  "\\v"   ","     "\\0"  "."])
 
 / full map
-m:o,n,a
+m:v,o,n,a
 
 nl:{x+"$z\n"+y}
 say nl[;;""]/("#include \"key.h\""
