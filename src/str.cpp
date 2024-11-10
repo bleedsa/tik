@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <debug.h>
+#include <ti/real.h>
 
 namespace str {
 	uint8_t len(const char *s) {
@@ -13,9 +14,9 @@ namespace str {
 	str::str() {
 		i = 0;
 		sz = 1;
-		buf = (char*)malloc(sizeof(char) * sz);
+		buf = (char*)malloc(sizeof(char) * (sz + 1));
 		if (buf == nullptr) fatal(OS_E_MEMORY);
-		memset(buf, 0, sizeof(char) * sz);
+		memset(buf, 0, sizeof(char) * (sz + 1));
 	}
 
 	str::~str() {
@@ -47,21 +48,15 @@ namespace str {
 	}
 
 	void str::append(const char *x) {
-		dbg_printf("appending char*: ");
 		for (size_t j = 0; j < ::str::len(x); j++) {
 			push(x[j]);
-			dbg_printf("%c", buf[i - 1]);
 		}
-		dbg_printf("\n");
 	}
 
 	void str::append(str x) {
-		dbg_printf("appending str: ");
 		for (size_t j = 0; j < x.len(); j++) {
-			dbg_printf("%c", x.at(j));
 			push(x.at(j));
 		}
-		dbg_printf("\n");
 	}
 
 	char str::at(size_t x) {
@@ -72,6 +67,12 @@ namespace str {
 		return i;
 	}
 
+	auto str::to_c_str() -> char* {
+		auto b = (char*)malloc(sizeof(char) * (i + 1));
+		memcpy(b, buf, sizeof(char) * (i + 1));
+		return b;
+	}
+
 	int_t str::to_i() {
 		int_t n = 0;
 		int_t m = 1;
@@ -80,6 +81,12 @@ namespace str {
 			m *= 10;
 		}
 		return n;
+	}
+
+	real_t str::to_f() {
+		auto b = (char*)malloc(sizeof(char) * (i + 1));
+		memcpy(b, buf, sizeof(char) * (i + 1));
+		return os_StrToReal(b, NULL);
 	}
 
 	str from_c(const char *s) {
@@ -96,6 +103,12 @@ namespace str {
 			n /= 10;
 		}
 		return r;
+	}
+
+	str from_f(real_t x) {
+		char buf[32];
+		os_RealToStr(buf, &x, 32, 4, -1);
+		return from_c(buf);
 	}
 }
 
