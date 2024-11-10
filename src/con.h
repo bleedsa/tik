@@ -18,6 +18,7 @@ namespace con {
 		void clr();
 		void nl();
 		void tab();
+		void back();
 
 		uint8_t putc(char c);
 		uint8_t puts(const char *s);

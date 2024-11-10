@@ -38,10 +38,15 @@ namespace con {
 		x += 2;
 	}
 
+	void con::back() {
+		x -= 1;
+	}
+
 	uint8_t con::putc(char c) {
 		switch (c) {
 			case '\n': nl();  return 1;
 			case '\t': tab(); return 1;
+			case '\b': back(); return 1;
 		}
 
 		os_SetCursorPos(y, x);

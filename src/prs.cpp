@@ -12,8 +12,9 @@ namespace prs {
 			s.push('(');
 			a.for_each([&s](node_t x) {
 				s.append(x.to_str());
+				s.push(',');
 			});
-			s.push(')');
+			s.append("\b)");
 			break;
 		}
 		default:
