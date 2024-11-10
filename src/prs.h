@@ -30,27 +30,6 @@ namespace prs {
 			verb_t* v;
 		};
 
-		#define CLONE(x) { \
-			ty = x.ty; \
-			switch (ty) { \
-			case INT: \
-				i = x.i; \
-				break; \
-			case FLT: \
-				f = x.f; \
-				break; \
-			case CHR: \
-				c = x.c; \
-				break; \
-			case VEC: \
-				a = x.a; \
-				break; \
-			case VERB: \
-				v = x.v; \
-				break; \
-			} \
-		}
-
 		node_t(int_t x) {
 			ty = INT;
 			i = x;
@@ -68,12 +47,8 @@ namespace prs {
 
 		node_t(verb_t x);
 
-		node_t(const node_t& x) CLONE(x)
-
-		const node_t& operator=(const node_t& x) {
-			CLONE(x)
-			return *this;
-		}
+		node_t(const node_t& x);
+		const node_t& operator=(const node_t& x);
 
 		~node_t() {
 			switch (ty) {
@@ -86,15 +61,15 @@ namespace prs {
 	};
 
 	struct verb_t {
-		char v; /* verb */
+		str::str v; /* verb */
 		vec::vec<node_t> a; /* args */
 
 		verb_t() {
-			v = 0;
+			v = str::str();
 			a = vec::vec<node_t>();
 		}
 
-		verb_t(char c, vec::vec<node_t> q) {
+		verb_t(str::str c, vec::vec<node_t> q) {
 			v = c;
 			a = q;
 		}
@@ -104,6 +79,8 @@ namespace prs {
 			a = x.a;
 			return *this;
 		}
+
+		str::str to_str();
 	};
 
 	struct tape {
@@ -129,8 +106,9 @@ namespace prs {
 
 	node_t::node_t(verb_t x) {
 		ty = VERB;
-		v = new verb_t();
-		memcpy(&v, &x, sizeof(verb_t));
+		v = (verb_t*)malloc(sizeof(verb_t));
+		v->v = x.v;
+		v->a = x.a;
 	}
 
 	template<typename T>

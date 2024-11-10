@@ -2,12 +2,43 @@
 #include "con.h"
 
 namespace prs {
+	#define CLONE(x) { \
+		ty = x.ty; \
+		switch (ty) { \
+		case INT: \
+			i = x.i; \
+			break; \
+		case FLT: \
+			f = x.f; \
+			break; \
+		case CHR: \
+			c = x.c; \
+			break; \
+		case VEC: \
+			a = x.a; \
+			break; \
+		case VERB: \
+			v = (verb_t*)malloc(sizeof(verb_t)); \
+			v->a = x.v->a; \
+			v->v = x.v->v; \
+			break; \
+		} \
+	}
+
+	node_t::node_t(const node_t& x) CLONE(x);
+
+	auto node_t::operator=(const node_t& x) -> const node_t& {
+		CLONE(x)
+		return *this;
+	}
+
 	auto node_t::to_str() -> str::str {
 		auto s = str::str();
 
 		switch (ty) {
 		case INT: s.append(str::from_i(i)); break;
 		case FLT: s.append(str::from_f(f)); break;
+		case VERB: s.append(v->to_str()); break;
 		case VEC: {
 			s.push('(');
 			a.for_each([&s](node_t x) {
@@ -34,6 +65,19 @@ namespace prs {
 
 			return b;
 		} else return false;
+	}
+	
+	auto verb_t::to_str() -> str::str {
+		auto r = str::str();
+		switch (a.len()) {
+			case 1: {
+				r.append(v);
+				r.append(a.at(0).get().to_str());
+				break;
+			}
+			default: r.append("???");
+		}
+		return r;
 	}
 
 	auto noun(tape *t) -> R_N {
@@ -109,7 +153,7 @@ namespace prs {
 					auto a = vec::vec<node_t>();
 					a.push(n.ok());
 
-					auto c = x.to_str().at(0);
+					auto c = x.to_str();
 
 					return R_N::mkok(node_t(verb_t(c, a)));
 				} else {
