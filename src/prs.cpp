@@ -143,6 +143,7 @@ namespace prs {
 		dbg_printf("expr()\n");
 
 		auto p = t->peek();
+		R_N r;
 		if (p.is_some()) {
 			auto x = p.get();
 			switch (x.ty) {
@@ -155,16 +156,19 @@ namespace prs {
 
 					auto c = x.to_str();
 
-					return R_N::mkok(node_t(verb_t(c, a)));
+					r = R_N::mkok(node_t(verb_t(c, a)));
 				} else {
 					return R_N::mkerr(n.err());
 				}
+				break;
 			}
-			default: return noun(t);
+			default: r = noun(t);
 			}
 		} else {
 			return R_N::mkerr(str::from_c("parse\n? EOF"));
 		}
+
+		return r;
 	}
 
 	auto exprs(tape *t) -> R_A {
